@@ -6,6 +6,17 @@ This project was built with [Lovable](https://lovable.dev).
 
 **Live app**: https://tebogomkhwanazi-productivity-hub.lovable.app
 
+## Project Overview
+AI Productivity Hub is a workplace assistant that helps professionals save time on emails, meetings, and daily planning. It uses AI to generate professional content quickly.
+
+## Features:
+-Email Generator: Creates professional emails using To, Purpose, Key Points, Tone, Audience.
+-Meeting Summarizer: Turns ling meeting transcripts into Summary, Action Items, Deadlines.
+- Task Planner: Creates a full daily schedule from 8am to 5pm with priority tags.
+
+## Tools Used
+Lovable AI, TypeScript, Tailwind CSS, React + Vite, Github
+
 ## Build with Lovable
 
 Continue developing this project in the [Lovable editor](https://lovable.dev/projects/82172a8f-b06a-4ebc-b0a8-a11c8678c77c).
@@ -17,10 +28,3 @@ Continue developing this project in the [Lovable editor](https://lovable.dev/pro
 ## Development
 
 Prefer working locally? You need Node.js and npm — [install with nvm](https://github.com/nvm-sh/nvm#installing-and-updating).
-
-```sh
-git clone <this-repository-url>
-cd <repository-name>
-npm i
-npm run dev
-```
