@@ -10,7 +10,7 @@ export function Panel({
   className,
 }: {
   title: string;
-  badge?: string;
+  badge?: string | undefined;
   aside?: string;
   children: ReactNode;
   className?: string;

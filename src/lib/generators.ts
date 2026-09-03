@@ -11,13 +11,13 @@ const splitPoints = (raw: string) =>
     .filter(Boolean);
 
 const firstName = (to: string) => {
-  const cleaned = to.split(/[<(]/)[0].trim();
+  const cleaned = (to.split(/[<(]/)[0] ?? "").trim();
   if (!cleaned) return "there";
   if (cleaned.includes("@")) {
-    const local = cleaned.split("@")[0].replace(/[._-]+/g, " ");
+    const local = (cleaned.split("@")[0] ?? "").replace(/[._-]+/g, " ");
     return local.charAt(0).toUpperCase() + local.slice(1);
   }
-  return cleaned.split(/\s+/)[0];
+  return cleaned.split(/\s+/)[0] ?? "there";
 };
 
 const titleCase = (value: string) =>
@@ -189,7 +189,7 @@ export function buildSchedule(rawTasks: string): ScheduleBlock[] {
       let priority: Priority = "Medium";
       let label = line;
       if (match) {
-        const token = match[1].toLowerCase();
+        const token = (match[1] ?? "").toLowerCase();
         priority =
           token === "high" || token === "p0" || token === "p1"
             ? "High"
@@ -214,7 +214,11 @@ export function buildSchedule(rawTasks: string): ScheduleBlock[] {
       slot += 1;
       if (slot >= SLOTS.length) break;
     }
-    blocks.push({ time: SLOTS[slot], label: task.label, priority: task.priority });
+    blocks.push({
+      time: SLOTS[slot] ?? "16:00",
+      label: task.label,
+      priority: task.priority,
+    });
     slot += 1;
   }
 
