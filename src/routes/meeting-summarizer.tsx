@@ -27,7 +27,7 @@ export const Route = createFileRoute("/meeting-summarizer")({
       },
     ],
   }),
-  component: MeetingSummarizer;
+  component: MeetingSummarizer,
 });
 
 function MeetingSummarizer() {
