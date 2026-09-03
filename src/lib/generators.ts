@@ -20,6 +20,9 @@ const firstName = (to: string) => {
   return cleaned.split(/\s+/)[0] ?? "there";
 };
 
+const lowerFirst = (value: string) =>
+  /^[A-Z]{2,}/.test(value) ? value : value.charAt(0).toLowerCase() + value.slice(1);
+
 const titleCase = (value: string) =>
   value.charAt(0).toUpperCase() + value.slice(1).replace(/\.$/, "");
 
@@ -52,9 +55,9 @@ export function generateEmail(input: {
   };
 
   const opening: Record<Tone, string> = {
-    formal: `I am writing regarding ${purpose.toLowerCase()}.`,
-    informal: `Just reaching out about ${purpose.toLowerCase()}.`,
-    persuasive: `I'd like to make the case for ${purpose.toLowerCase()} — I think the timing works strongly in our favour.`,
+    formal: `I am writing regarding ${lowerFirst(purpose)}.`,
+    informal: `Just reaching out about ${lowerFirst(purpose)}.`,
+    persuasive: `I'd like to make the case for ${lowerFirst(purpose)} — I think the timing works strongly in our favour.`,
   };
 
   const closing: Record<Tone, string> = {
