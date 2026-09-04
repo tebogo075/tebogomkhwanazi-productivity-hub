@@ -1,5 +1,6 @@
 import { Link, useRouterState } from "@tanstack/react-router";
 import { LayoutDashboard, Mail, NotebookPen, CalendarClock } from "lucide-react";
+import { DonezaLogo } from "@/components/DonezaLogo";
 import { cn } from "@/lib/utils";
 
 const NAV = [
