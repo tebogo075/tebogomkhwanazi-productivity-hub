@@ -78,13 +78,13 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
     meta: [
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
-      { title: "Vanta — AI Workplace Productivity Assistant" },
+      { title: "DoneZA - Your day, DoneZA" },
       {
         name: "description",
         content:
           "Draft emails, summarize meetings and plan your day in one AI workplace productivity workspace.",
       },
-      { property: "og:title", content: "Vanta — AI Workplace Productivity Assistant" },
+      { property: "og:title", content: "DoneZA - Your day, DoneZA" },
       {
         property: "og:description",
         content:

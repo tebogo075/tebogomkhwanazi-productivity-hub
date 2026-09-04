@@ -15,13 +15,13 @@ import { buildSchedule, formatSchedule, type ScheduleBlock } from "@/lib/generat
 export const Route = createFileRoute("/task-planner")({
   head: () => ({
     meta: [
-      { title: "Task Planner — Vanta Workplace Assistant" },
+      { title: "Task Planner — DoneZA" },
       {
         name: "description",
         content:
           "Drop in your to-do list and get a realistic 8am–5pm daily schedule with priority tags you can copy or edit.",
       },
-      { property: "og:title", content: "Task Planner — Vanta" },
+      { property: "og:title", content: "Task Planner — DoneZA" },
       {
         property: "og:description",
         content: "Turn a task list into an 8am–5pm plan with priority tags.",

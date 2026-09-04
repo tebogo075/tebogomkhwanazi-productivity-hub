@@ -6,13 +6,13 @@ import { Panel, PriorityTag } from "@/components/ui-kit";
 export const Route = createFileRoute("/")({
   head: () => ({
     meta: [
-      { title: "Vanta — AI Workplace Productivity Assistant" },
+      { title: "DoneZA - Your day, DoneZA" },
       {
         name: "description",
         content:
           "Draft emails, summarize meetings and plan your 8am–5pm day in one workspace. Every output is copyable and editable.",
       },
-      { property: "og:title", content: "Vanta — AI Workplace Productivity Assistant" },
+      { property: "og:title", content: "DoneZA - Your day, DoneZA" },
       {
         property: "og:description",
         content:

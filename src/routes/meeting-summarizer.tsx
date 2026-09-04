@@ -14,13 +14,13 @@ import { formatSummary, summarizeMeeting, type MeetingSummary } from "@/lib/gene
 export const Route = createFileRoute("/meeting-summarizer")({
   head: () => ({
     meta: [
-      { title: "Meeting Summarizer — Vanta Workplace Assistant" },
+      { title: "Meeting Summarizer — DoneZA" },
       {
         name: "description",
         content:
           "Paste any meeting transcript or notes and get a clean summary, action items and deadlines you can copy or edit.",
       },
-      { property: "og:title", content: "Meeting Summarizer — Vanta" },
+      { property: "og:title", content: "Meeting Summarizer — DoneZA" },
       {
         property: "og:description",
         content: "Turn messy meeting notes into a summary, action items and deadlines.",
