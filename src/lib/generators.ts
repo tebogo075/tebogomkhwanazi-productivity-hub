@@ -104,8 +104,8 @@ export function extractMeetingTime(raw: string): string | null {
   const meridiem = (match[4] ?? "").toLowerCase();
   const time = `${hour}${minutes}${meridiem}`;
   if (!day) return time;
-  const connector = /^(today|tomorrow|tonight)$/i.test(day) ? "" : "on ";
-  return `${connector}${day.toLowerCase() === day ? day : day} at ${time}`.trim();
+  const relative = /^(today|tomorrow|tonight)$/i.test(day);
+  return relative ? `${day.toLowerCase()} at ${time}` : `on ${day} at ${time}`;
 }
 
 type Intent =
