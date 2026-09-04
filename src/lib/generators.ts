@@ -197,7 +197,13 @@ export function generateEmail(input: {
     .replace(/^(?:to|for)\s+/i, "")
     .replace(/\s+(?:at|on)$/i, "")
     .trim();
-  const topic = lowerFirst(topicBase || cleaned);
+  const rawTopic = lowerFirst(topicBase || cleaned);
+  const topic =
+    intent === "reschedule" || intent === "meeting"
+      ? /\b(meeting|call|catch[- ]?up|session)\b/i.test(rawTopic)
+        ? "our upcoming meeting"
+        : `our plans around ${rawTopic}`
+      : rawTopic;
 
   const openers: Record<Tone, string> = {
     formal: `I hope this message finds you well. I'm getting in touch about ${topic}.`,
