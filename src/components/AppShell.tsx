@@ -41,21 +41,15 @@ export function AppShell({ children }: { children: React.ReactNode }) {
     <div className="flex min-h-screen flex-col bg-background">
       <div className="flex flex-1">
         <aside className="hidden w-64 shrink-0 flex-col border-r border-border/70 bg-surface/60 p-5 md:flex">
-          <div className="flex items-center gap-3 px-2 pb-7">
-            <div className="bg-lumen shadow-lumen grid size-9 place-items-center rounded-lg">
-              <span className="font-display font-bold text-primary-foreground">V</span>
-            </div>
-            <div>
-              <p className="font-display text-sm font-semibold tracking-tight">Vanta</p>
-              <p className="text-[11px] text-muted-foreground">Productivity OS</p>
-            </div>
+          <div className="px-2 pb-7">
+            <Brand />
           </div>
 
           <SidebarNav pathname={pathname} />
 
           <div className="glass mt-auto rounded-2xl p-4 ring-1 ring-border">
             <p className="mb-1 text-[11px] text-muted-foreground">Plan</p>
-            <p className="font-display text-sm font-semibold">Lumen Pro</p>
+            <p className="font-display text-sm font-semibold">DoneZA Premium</p>
             <div className="mt-3 h-1.5 overflow-hidden rounded-full bg-border">
               <div className="bg-lumen h-full w-2/3" />
             </div>
