@@ -157,7 +157,11 @@ export function buildSubject(cleaned: string, intent: Intent): string {
   const topic = keywords
     .filter((word) => (seen.has(word) ? false : (seen.add(word), true)))
     .slice(0, 5)
-    .map((word) => (word.length <= 2 ? word : word.charAt(0).toUpperCase() + word.slice(1)))
+    .map((word) =>
+      /^(?:q[1-4]|[a-z]{1,4}\d+|\d+[a-z]{1,3})$/.test(word)
+        ? word.toUpperCase()
+        : word.charAt(0).toUpperCase() + word.slice(1),
+    )
     .join(" ");
 
   const label = INTENT_LABEL[intent];
