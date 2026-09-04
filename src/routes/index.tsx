@@ -48,8 +48,8 @@ function Dashboard() {
   return (
     <>
       <PageHeader
-        eyebrow="Assistant"
-        title="Your workday, drafted"
+        eyebrow="DoneZA"
+        title="Your day, DoneZA"
         meta="Three tools · one workspace"
       />
 
