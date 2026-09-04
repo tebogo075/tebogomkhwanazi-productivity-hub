@@ -60,19 +60,20 @@ export function AppShell({ children }: { children: React.ReactNode }) {
         </aside>
 
         <main className="min-w-0 flex-1">
-          <div className="border-b border-border/60 px-6 py-4 md:hidden">
+          <div className="space-y-4 border-b border-border/60 px-6 py-4 md:hidden">
+            <Brand />
             <SidebarNav pathname={pathname} />
           </div>
           {children}
         </main>
       </div>
 
-      <footer className="flex items-center justify-between gap-4 border-t border-border/60 px-6 py-5 md:px-10">
+      <footer className="flex flex-wrap items-center justify-between gap-3 border-t border-border/60 px-6 py-5 md:px-10">
         <p className="text-xs text-muted-foreground">
           Responsible AI: AI-generated content, review before use.
         </p>
         <p className="font-display text-[11px] text-muted-foreground/70">
-          Vanta · Lumen Pro
+          DoneZA · Your day, DoneZA
         </p>
       </footer>
     </div>
