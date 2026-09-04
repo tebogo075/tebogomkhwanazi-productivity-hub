@@ -146,6 +146,6 @@
   }
 
   ::selection {
-    background-color: oklch(0.855 0.235 130 / 28%);
+    background-color: #B8E63647;
   }
 }
