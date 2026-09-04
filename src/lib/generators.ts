@@ -186,7 +186,14 @@ export function generateEmail(input: {
   const greeting =
     input.tone === "informal" ? `Hi ${name},` : input.tone === "persuasive" ? `Hello ${name},` : `Dear ${name},`;
 
-  const topic = lowerFirst(cleaned.replace(/\.$/, ""));
+  const topicBase = cleaned
+    .replace(/\.$/, "")
+    .replace(TIME_PATTERN, "")
+    .replace(/\s{2,}/g, " ")
+    .replace(/^(?:to|for)\s+/i, "")
+    .replace(/\s+(?:at|on)$/i, "")
+    .trim();
+  const topic = lowerFirst(topicBase || cleaned);
 
   const openers: Record<Tone, string> = {
     formal: `I hope this message finds you well. I'm getting in touch about ${topic}.`,
