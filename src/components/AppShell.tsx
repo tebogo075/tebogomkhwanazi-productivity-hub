@@ -34,6 +34,27 @@ function SidebarNav({ pathname }: { pathname: string }) {
   );
 }
 
+function Brand() {
+  return (
+    <div>
+      <div className="flex items-center gap-3">
+        <div className="bg-lumen shadow-lumen grid size-9 place-items-center rounded-xl">
+          <span className="font-display text-base font-bold text-primary-foreground">
+            D
+          </span>
+        </div>
+        <p className="font-display text-xl leading-none font-bold tracking-tight">
+          Done<span className="text-primary">ZA</span>
+        </p>
+      </div>
+      <p className="mt-2 text-[11px] leading-snug text-muted-foreground">
+        Your emails, meetings, tasks. DoneZA
+      </p>
+    </div>
+  );
+}
+
+
 export function AppShell({ children }: { children: React.ReactNode }) {
   const pathname = useRouterState({ select: (state) => state.location.pathname });
 
