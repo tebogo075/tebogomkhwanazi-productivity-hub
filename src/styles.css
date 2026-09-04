@@ -60,10 +60,10 @@
   --card-foreground: oklch(0.97 0.005 150);
   --popover: oklch(0.175 0.007 150);
   --popover-foreground: oklch(0.97 0.005 150);
-  --primary: oklch(0.855 0.235 130);
+  --primary: #B8E636;
   --primary-foreground: oklch(0.14 0.02 150);
-  --primary-glow: oklch(0.925 0.19 128);
-  --primary-deep: oklch(0.62 0.17 148);
+  --primary-glow: #D4F85A;
+  --primary-deep: #8FBF2A;
   --secondary: oklch(0.23 0.008 150);
   --secondary-foreground: oklch(0.97 0.005 150);
   --muted: oklch(0.21 0.007 150);
@@ -74,11 +74,11 @@
   --destructive-foreground: oklch(0.97 0.01 25);
   --border: oklch(0.27 0.009 150);
   --input: oklch(0.27 0.009 150);
-  --ring: oklch(0.855 0.235 130);
+  --ring: #B8E636;
 
   --priority-high: oklch(0.68 0.19 25);
   --priority-medium: oklch(0.82 0.14 88);
-  --priority-low: oklch(0.855 0.235 130);
+  --priority-low: #B8E636;
 
   --gradient-lumen: linear-gradient(95deg, var(--primary-glow), var(--primary) 55%, oklch(0.82 0.14 88));
   --gradient-lit: linear-gradient(
@@ -88,8 +88,8 @@
     var(--primary-deep) 100%
   );
   --glass-fill: linear-gradient(160deg, oklch(1 0 0 / 5.5%), oklch(1 0 0 / 1.5%));
-  --shadow-lumen: 0 10px 34px -8px oklch(0.855 0.235 130 / 45%);
-  --shadow-glow-sm: 0 0 8px 2px oklch(0.855 0.235 130 / 70%);
+  --shadow-lumen: 0 10px 34px -8px #B8E63673;
+  --shadow-glow-sm: 0 0 8px 2px #B8E636B3;
 }
 
 @utility glass {
@@ -146,6 +146,6 @@
   }
 
   ::selection {
-    background-color: oklch(0.855 0.235 130 / 28%);
+    background-color: #B8E63647;
   }
 }
