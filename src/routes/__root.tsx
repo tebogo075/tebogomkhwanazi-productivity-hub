@@ -82,13 +82,13 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       {
         name: "description",
         content:
-          "Draft emails, summarize meetings and plan your day in one AI workplace productivity workspace.",
+          "Your emails, meetings and tasks — DoneZA. Draft, summarize and plan your whole workday in one premium South African productivity workspace.",
       },
       { property: "og:title", content: "DoneZA - Your day, DoneZA" },
       {
         property: "og:description",
         content:
-          "Draft emails, summarize meetings and plan your day in one AI workplace productivity workspace.",
+          "Your emails, meetings and tasks — DoneZA. Draft, summarize and plan your whole workday in one premium South African productivity workspace.",
       },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
@@ -102,7 +102,7 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       { rel: "preconnect", href: "https://fonts.gstatic.com", crossOrigin: "anonymous" },
       {
         rel: "stylesheet",
-        href: "https://fonts.googleapis.com/css2?family=Sora:wght@300;400;500;600;700&family=Inter:wght@400;500;600&display=swap",
+        href: "https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600;700&display=swap",
       },
       { rel: "icon", href: "/favicon.ico", type: "image/x-icon" },
     ],

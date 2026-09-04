@@ -50,7 +50,7 @@
 :root {
   --radius: 0.875rem;
 
-  --font-display-family: "Sora", ui-sans-serif, system-ui, sans-serif;
+  --font-display-family: "Space Grotesk", ui-sans-serif, system-ui, sans-serif;
   --font-body-family: "Inter", ui-sans-serif, system-ui, sans-serif;
 
   --background: oklch(0.09 0.008 285);
