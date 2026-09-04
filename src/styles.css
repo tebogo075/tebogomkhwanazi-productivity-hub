@@ -103,7 +103,7 @@
     background: linear-gradient(
       90deg,
       transparent,
-      oklch(0.855 0.068 280 / 50%),
+      oklch(0.925 0.19 128 / 45%),
       transparent
     );
     pointer-events: none;
@@ -129,7 +129,7 @@
 }
 
 @utility well {
-  background-color: oklch(0.09 0.008 285 / 55%);
+  background-color: oklch(0.09 0.004 150 / 60%);
   border: 1px solid var(--border);
 }
 
@@ -146,6 +146,6 @@
   }
 
   ::selection {
-    background-color: oklch(0.735 0.126 275 / 30%);
+    background-color: oklch(0.855 0.235 130 / 28%);
   }
 }
