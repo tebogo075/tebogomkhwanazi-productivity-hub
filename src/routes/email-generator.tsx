@@ -22,13 +22,13 @@ import {
 export const Route = createFileRoute("/email-generator")({
   head: () => ({
     meta: [
-      { title: "Smart Email Generator — Vanta Workplace Assistant" },
+      { title: "Smart Email Generator — DoneZA" },
       {
         name: "description",
         content:
           "Draft professional emails in seconds: set recipient, purpose, key points, tone and audience, then copy or edit the result.",
       },
-      { property: "og:title", content: "Smart Email Generator — Vanta" },
+      { property: "og:title", content: "Smart Email Generator — DoneZA" },
       {
         property: "og:description",
         content:

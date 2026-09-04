@@ -34,6 +34,27 @@ function SidebarNav({ pathname }: { pathname: string }) {
   );
 }
 
+function Brand() {
+  return (
+    <div>
+      <div className="flex items-center gap-3">
+        <div className="bg-lumen shadow-lumen grid size-9 place-items-center rounded-xl">
+          <span className="font-display text-base font-bold text-primary-foreground">
+            D
+          </span>
+        </div>
+        <p className="font-display text-xl leading-none font-bold tracking-tight">
+          Done<span className="text-primary">ZA</span>
+        </p>
+      </div>
+      <p className="mt-2 text-[11px] leading-snug text-muted-foreground">
+        Your emails, meetings, tasks. DoneZA
+      </p>
+    </div>
+  );
+}
+
+
 export function AppShell({ children }: { children: React.ReactNode }) {
   const pathname = useRouterState({ select: (state) => state.location.pathname });
 
@@ -41,21 +62,15 @@ export function AppShell({ children }: { children: React.ReactNode }) {
     <div className="flex min-h-screen flex-col bg-background">
       <div className="flex flex-1">
         <aside className="hidden w-64 shrink-0 flex-col border-r border-border/70 bg-surface/60 p-5 md:flex">
-          <div className="flex items-center gap-3 px-2 pb-7">
-            <div className="bg-lumen shadow-lumen grid size-9 place-items-center rounded-lg">
-              <span className="font-display font-bold text-primary-foreground">V</span>
-            </div>
-            <div>
-              <p className="font-display text-sm font-semibold tracking-tight">Vanta</p>
-              <p className="text-[11px] text-muted-foreground">Productivity OS</p>
-            </div>
+          <div className="px-2 pb-7">
+            <Brand />
           </div>
 
           <SidebarNav pathname={pathname} />
 
           <div className="glass mt-auto rounded-2xl p-4 ring-1 ring-border">
             <p className="mb-1 text-[11px] text-muted-foreground">Plan</p>
-            <p className="font-display text-sm font-semibold">Lumen Pro</p>
+            <p className="font-display text-sm font-semibold">DoneZA Premium</p>
             <div className="mt-3 h-1.5 overflow-hidden rounded-full bg-border">
               <div className="bg-lumen h-full w-2/3" />
             </div>
@@ -66,19 +81,20 @@ export function AppShell({ children }: { children: React.ReactNode }) {
         </aside>
 
         <main className="min-w-0 flex-1">
-          <div className="border-b border-border/60 px-6 py-4 md:hidden">
+          <div className="space-y-4 border-b border-border/60 px-6 py-4 md:hidden">
+            <Brand />
             <SidebarNav pathname={pathname} />
           </div>
           {children}
         </main>
       </div>
 
-      <footer className="flex items-center justify-between gap-4 border-t border-border/60 px-6 py-5 md:px-10">
+      <footer className="flex flex-wrap items-center justify-between gap-3 border-t border-border/60 px-6 py-5 md:px-10">
         <p className="text-xs text-muted-foreground">
           Responsible AI: AI-generated content, review before use.
         </p>
         <p className="font-display text-[11px] text-muted-foreground/70">
-          Vanta · Lumen Pro
+          DoneZA · Your day, DoneZA
         </p>
       </footer>
     </div>
