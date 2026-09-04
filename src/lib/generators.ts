@@ -26,6 +26,148 @@ const lowerFirst = (value: string) =>
 const titleCase = (value: string) =>
   value.charAt(0).toUpperCase() + value.slice(1).replace(/\.$/, "");
 
+const STOP_WORDS = new Set([
+  "a",
+  "an",
+  "the",
+  "to",
+  "for",
+  "of",
+  "on",
+  "in",
+  "at",
+  "and",
+  "or",
+  "with",
+  "about",
+  "that",
+  "this",
+  "please",
+  "kindly",
+  "regarding",
+  "my",
+  "our",
+  "your",
+  "their",
+  "is",
+  "are",
+  "be",
+  "can",
+  "could",
+  "would",
+  "we",
+  "i",
+  "them",
+  "him",
+  "her",
+  "it",
+]);
+
+/** Strips meta-prompt scaffolding like "write a professional email to X about ...". */
+const cleanPurpose = (raw: string) => {
+  let value = raw.trim().replace(/\s+/g, " ");
+  value = value.replace(
+    /^(?:please\s+|kindly\s+|can you\s+|could you\s+)?(?:help me\s+)?(?:write|draft|compose|generate|create|send|prepare)\s+(?:me\s+)?(?:a|an|the)?\s*(?:short|brief|quick|nice|polite|friendly|professional|formal|informal|persuasive)*\s*(?:e-?mail|message|note|letter)\s*/i,
+    "",
+  );
+  value = value.replace(/^(?:to|for)\s+[^,]{1,40}?\s+(?:about|regarding|asking|to)\s+/i, "");
+  value = value.replace(/^(?:about|regarding|asking(?:\s+them)?\s+to|saying that|saying)\s+/i, "");
+  value = value.replace(/^(?:that|which)\s+/i, "");
+  return value.replace(/[.\s]+$/, "");
+};
+
+const TIME_PATTERN =
+  /\b(?:(today|tomorrow|tonight|monday|tuesday|wednesday|thursday|friday|saturday|sunday|mon|tue|tues|wed|thu|thur|thurs|fri|sat|sun)\s*)?(?:at\s*)?(\d{1,2})(?::(\d{2}))?\s*(am|pm)\b/i;
+
+/** Pulls a meeting time such as "tomorrow 10am" out of a free-text purpose. */
+export function extractMeetingTime(raw: string): string | null {
+  const match = TIME_PATTERN.exec(raw);
+  if (!match) return null;
+  const dayRaw = (match[1] ?? "").toLowerCase();
+  const dayMap: Record<string, string> = {
+    mon: "Monday",
+    tue: "Tuesday",
+    tues: "Tuesday",
+    wed: "Wednesday",
+    thu: "Thursday",
+    thur: "Thursday",
+    thurs: "Thursday",
+    fri: "Friday",
+    sat: "Saturday",
+    sun: "Sunday",
+  };
+  const day = dayRaw
+    ? (dayMap[dayRaw] ?? dayRaw.charAt(0).toUpperCase() + dayRaw.slice(1))
+    : "";
+  const hour = match[2];
+  const minutes = match[3] ? `:${match[3]}` : "";
+  const meridiem = (match[4] ?? "").toLowerCase();
+  const time = `${hour}${minutes}${meridiem}`;
+  if (!day) return time;
+  const connector = /^(today|tomorrow|tonight)$/i.test(day) ? "" : "on ";
+  return `${connector}${day.toLowerCase() === day ? day : day} at ${time}`.trim();
+}
+
+type Intent =
+  | "reschedule"
+  | "follow-up"
+  | "proposal"
+  | "approval"
+  | "meeting"
+  | "update"
+  | "thanks"
+  | "request"
+  | "general";
+
+const detectIntent = (value: string): Intent => {
+  const text = value.toLowerCase();
+  if (/reschedul|move (?:the|our) (?:meeting|call)|postpone|new time/.test(text)) return "reschedule";
+  if (/follow[- ]?up|checking in|circle back|chase/.test(text)) return "follow-up";
+  if (/proposal|quote|pitch|offer|pricing/.test(text)) return "proposal";
+  if (/approv|sign[- ]?off|permission|authoris|authoriz/.test(text)) return "approval";
+  if (/meeting|call|catch[- ]?up|schedule|book|invite/.test(text)) return "meeting";
+  if (/update|status|progress|report/.test(text)) return "update";
+  if (/thank|apprecia/.test(text)) return "thanks";
+  if (/request|ask(?:ing)? for|need|require/.test(text)) return "request";
+  return "general";
+};
+
+const INTENT_LABEL: Record<Intent, string> = {
+  reschedule: "Rescheduling",
+  "follow-up": "Follow-Up",
+  proposal: "Proposal",
+  approval: "Approval",
+  meeting: "Meeting",
+  update: "Update",
+  thanks: "Thank You",
+  request: "Request",
+  general: "Quick Note",
+};
+
+/** Builds a compact 5–7 word subject line from the cleaned purpose. */
+export function buildSubject(cleaned: string, intent: Intent): string {
+  const keywords = cleaned
+    .toLowerCase()
+    .replace(/[^a-z0-9\s&/-]/g, " ")
+    .split(/\s+/)
+    .filter((word) => word.length > 1 && !STOP_WORDS.has(word))
+    .filter((word) => !/^(?:email|message|note|write|draft|send|professional)$/.test(word));
+
+  const seen = new Set<string>();
+  const topic = keywords
+    .filter((word) => (seen.has(word) ? false : (seen.add(word), true)))
+    .slice(0, 5)
+    .map((word) => (word.length <= 2 ? word : word.charAt(0).toUpperCase() + word.slice(1)))
+    .join(" ");
+
+  const label = INTENT_LABEL[intent];
+  if (!topic) return label;
+  const combined = /reschedul|follow|proposal|approv|meeting|update|thank/i.test(topic)
+    ? topic
+    : `${label}: ${topic}`;
+  return combined.split(/\s+/).slice(0, 7).join(" ");
+};
+
 export function generateEmail(input: {
   to: string;
   purpose: string;
@@ -35,36 +177,49 @@ export function generateEmail(input: {
   sender?: string;
 }): string {
   const name = firstName(input.to);
-  const purpose = input.purpose.trim() || "an update on our current work";
+  const cleaned = cleanPurpose(input.purpose) || "a quick update on our current work";
+  const intent = detectIntent(cleaned);
+  const meetingTime = extractMeetingTime(cleaned);
   const points = splitPoints(input.keyPoints);
   const sender = input.sender?.trim() || "Your Name";
 
   const greeting =
-    input.tone === "informal"
-      ? `Hi ${name},`
-      : input.tone === "persuasive"
-        ? `Hello ${name},`
-        : `Dear ${name},`;
+    input.tone === "informal" ? `Hi ${name},` : input.tone === "persuasive" ? `Hello ${name},` : `Dear ${name},`;
 
-  const audienceFrame: Record<Audience, string> = {
-    client:
-      "Thank you for your continued partnership — I want to make sure you have everything you need on this.",
-    manager:
-      "I wanted to keep you informed and flag anything that needs your decision.",
-    team: "Quick note so we're all working from the same picture.",
+  const topic = lowerFirst(cleaned.replace(/\.$/, ""));
+
+  const openers: Record<Tone, string> = {
+    formal: `I hope this message finds you well. I'm getting in touch about ${topic}.`,
+    informal: `Hope you're doing well! I wanted to touch base about ${topic}.`,
+    persuasive: `I hope you're having a good week. I'd love your thoughts on ${topic} — I think there's a real opportunity here.`,
   };
 
-  const opening: Record<Tone, string> = {
-    formal: `I am writing regarding ${lowerFirst(purpose)}.`,
-    informal: `Just reaching out about ${lowerFirst(purpose)}.`,
-    persuasive: `I'd like to make the case for ${lowerFirst(purpose)} — I think the timing works strongly in our favour.`,
+  const intentLine: Record<Intent, string> = {
+    reschedule: meetingTime
+      ? `Would it be possible to move our meeting to ${meetingTime}? If that doesn't suit, I'm happy to work around your calendar.`
+      : "Would it be possible to find an alternative time? I'm happy to work around your calendar.",
+    "follow-up": "I wanted to follow up so nothing slips through the cracks on this.",
+    proposal: "I've outlined the essentials below so you can see the shape of it at a glance.",
+    approval: "When you have a moment, I'd appreciate your go-ahead so we can keep things moving.",
+    meeting: meetingTime
+      ? `Would ${meetingTime} work for you? I'm flexible if another slot is easier.`
+      : "Let me know a time that suits you and I'll send an invite across.",
+    update: "Here's a short summary of where things stand right now.",
+    thanks: "I really appreciate the time and support you've given this.",
+    request: "I've kept the ask as simple as possible below.",
+    general: "I've pulled the main details together below for easy reference.",
+  };
+
+  const audienceFrame: Record<Audience, string> = {
+    client: "Thanks as always for the partnership — I want to make sure you have everything you need.",
+    manager: "Flagging it here so you have full visibility and can weigh in where needed.",
+    team: "Sharing it with everyone so we're all working from the same picture.",
   };
 
   const closing: Record<Tone, string> = {
-    formal: "Please let me know if you require any further detail.",
+    formal: "Please do let me know if you'd like any further detail.",
     informal: "Let me know what you think whenever you get a moment.",
-    persuasive:
-      "If you're happy with the direction, I can move this forward straight away — just say the word.",
+    persuasive: "If you're happy with the direction, just say the word and I'll move it forward.",
   };
 
   const signOff: Record<Tone, string> = {
@@ -73,28 +228,25 @@ export function generateEmail(input: {
     persuasive: "Best regards,",
   };
 
-  const body = points.length
-    ? points.map((point) => `• ${titleCase(point)}`).join("\n")
-    : "• Full details to follow in a short follow-up note.";
-
-  const subject = `Subject: ${titleCase(purpose)}`;
-
-  return [
-    subject,
+  const lines = [
+    `Subject: ${buildSubject(cleaned, intent)}`,
     "",
     greeting,
     "",
-    `${opening[input.tone]} ${audienceFrame[input.audience]}`,
+    openers[input.tone],
     "",
-    "Key points:",
-    body,
-    "",
-    closing[input.tone],
-    "",
-    signOff[input.tone],
-    sender,
-  ].join("\n");
+    `${intentLine[intent]} ${audienceFrame[input.audience]}`,
+  ];
+
+  if (points.length) {
+    lines.push("", "A few key points:", points.map((point) => `• ${titleCase(point)}`).join("\n"));
+  }
+
+  lines.push("", closing[input.tone], "", signOff[input.tone], sender);
+
+  return lines.join("\n");
 }
+
 
 const DATE_PATTERN =
   /\b(?:mon|tues?|wed(?:nes)?|thur?s?|fri|sat(?:ur)?|sun)(?:day)?\b|\b\d{1,2}(?:st|nd|rd|th)?\s+(?:jan|feb|mar|apr|may|jun|jul|aug|sep|oct|nov|dec)[a-z]*\b|\b(?:jan|feb|mar|apr|may|jun|jul|aug|sep|oct|nov|dec)[a-z]*\s+\d{1,2}\b|\bQ[1-4]\b|\b\d{1,2}\/\d{1,2}(?:\/\d{2,4})?\b|\b(?:today|tomorrow|next week|end of (?:day|week|month))\b/i;
